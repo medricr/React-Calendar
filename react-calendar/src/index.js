@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-// import App from './App';
-// import * as serviceWorker from './serviceWorker';
-
+import './index.css';  
 // ++++++++++++++++++++++++++++++++++++=
 // REACT CALENDER
 // ++++++++++++++++++++++++++++++++++++
@@ -21,6 +18,8 @@ class CalenderBox extends React.Component{
         // alert the current day, as proof that handleclick works
         alert(this.state.day);
     }
+    // TODO
+    // A companion component to handleClick which allows the user to put a 'note' in the day they click on 
     render(){
         return(
             // render the box as a button with inline styling, displaying the day of the week and the date
@@ -35,16 +34,32 @@ class CalenderRow extends React.Component{
         this.state = {index: 0,};
         this.days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
         this.todays_date = props.date
+        this.days_left = props.days_left
+        this.weeks_left = this.days_left / 7;
+        this.odd_days_out = this.days_left % 7;
        
     }
     render(){
             var date = new Date();
+            // TODO
+            // divide the number of days up into increments of 7
+            // var weeks = this.weeks_left;
+            var weeks = this.weeks_left;
+            // if there is a remainder, store that number in its own variable
+            var odd_days = this.odd_days_out;
+            // for each full row, create a row of 7 days starting with the current date, and append that row to a master div
+            // for each incomplete row, create the reamining number of day boxes and append that row to the master div
+            // return the div
             return(  
                 this.days.map(function(day,index){
                     var updated_date = new Date(date);
                     updated_date.setDate(updated_date.getDate() + index)
-                    return <CalenderBox day={day} date={updated_date}/>            
-                })  
+                    // console.log("Days left: " + days);
+                    console.log("Weeks left: " + Math.floor(weeks));
+                    console.log("Spare days after week: " + odd_days);
+                    return (
+                    <CalenderBox day={day} date={updated_date}/>            
+                )})  
             )
     }
 }
@@ -64,7 +79,7 @@ class CalenderBoard extends React.Component {
             return(
                 <div>
                     <button>{this.state.current_date.toLocaleDateString() + " " + this.days_left}</button>
-                <CalenderRow date={this.state.current_date} />
+                <CalenderRow date={this.state.current_date} days_left = {this.days_left}/>
                 </div>
                 
     
